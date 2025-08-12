@@ -1,26 +1,27 @@
-# Project template
+# Imprints of Wind Disturbances on Wood Anatomy
 
-## 
-Directory structure for a sample project
+Tree lumen and membrane segmentations in confocal microscopy
 
-## Overview
+[Project description](https://biifsweden.github.io/projects/2025/08/12/AI4Life_OC3_17/)
+
+[Download code](archive/refs/heads/main.zip)
+
+## Installation
+
+## Usage
+
+## Cite
 
 ```
-|- bin/              Binary files (.exe)
-|
-|- data/             Raw data, essentially all input files
-|  |- Dataset1/
-|
-|- doc/              Documentation for the project
-|
-|- results/          Examples of results
-|  |- Dataset1/
-|
-|- src/              All code needed to go from input files to final results
-|
-|- .gitignore        Sets which parts of the repository that should be git tracked
-|
-|- README.md         Project overview
-|
-|- LICENSE.md        License for the project (usually GPL v3.0)
+Author list (2025). Title. Zenodo. https://doi.org/... .
 ```
+
+## License
+
+[MIT](LICENSE)
+
+## Contact
+
+[SciLifeLab BioImage Informatics Facility (BIIF)](https://www.scilifelab.se/units/bioimage-informatics/)
+
+Developed by [Kristina Lidayova](mailto:kristina.lidayova@scilifelab.se)

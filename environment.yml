@@ -1,0 +1,10 @@
+name: AI4Life_OC3_17
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip
+  - python
+  - jupyterlab
+  - pip:
+    - -r requirements.txt
