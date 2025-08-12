@@ -15,10 +15,6 @@ The project focuses on ...
 
 
 
-[Project description](https://biifsweden.github.io/projects/2025/08/12/AI4Life_OC3_17/)
-
-[Download code](archive/refs/heads/main.zip)
-
 ## Installation
 
 Install the [conda](https://conda.io) package, dependency and environment manager.
