@@ -22,11 +22,11 @@ Install the [conda](https://conda.io) package, dependency and environment manage
 You can download this repository from the green `Code` button → download ZIP, or clone through the command line with
 
     cd <path to any folder of choice>
-    git clone https://github.com/BIIFSweden/AI4Life_OC3_17.git
+    git clone https://github.com/ai4life/oc_3_project_17.git
 
-Then create the `AI4Life_OC3_17` conda environment:
+Then create the `oc_3_project_17` conda environment:
 
-    cd <path to your 'AI4Life_OC3_17' directory>
+    cd <path to your 'oc_3_project_17' directory>
     conda env create -f environment.yml
 
 This will install all necessary project dependencies.
@@ -35,10 +35,10 @@ This will install all necessary project dependencies.
 
 Copy all project data to the [data](data) directory (or use symbolic links).
 
-Then run [Jupyter Lab](https://jupyter.org) from within the `AI4Life_OC3_17` conda environment:
+Then run [Jupyter Lab](https://jupyter.org) from within the `oc_3_project_17` conda environment:
 
-    cd <path to your 'AI4Life_OC3_17' directory>
-    conda activate AI4Life_OC3_17
+    cd <path to your 'oc_3_project_17' directory>
+    conda activate oc_3_project_17
     jupyter-lab
 
 Inside the `notebooks` folder you will find Jupyter notebooks for:
