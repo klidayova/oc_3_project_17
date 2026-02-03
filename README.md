@@ -11,8 +11,12 @@ This repository contains code for the automatic segmentation of tree lumen and m
 All images used in this tutorial are licensed under **CC-BY**. If any of the instructions are not working, please [open an issue](https://github.com/ai4life-opencalls/oc_3_project_17/issues) or contact us at [ai4life@fht.org](ai4life@fht.org)!
 
 ## Introduction
-The project focuses on ...
+This project investigates differences in wood quality among trees from the Boubín Forest nature reserve, the largest indigenous forest in Central Europe. The forest has been significantly affected by windstorm disturbances in 1868 and 2017.
+Wood samples from trees aged 300–400 years provide an opportunity to investigate potential changes in wood anatomy associated with these events.
 
+<img width="1640" height="778" alt="Figure1" src="https://github.com/user-attachments/assets/ecbe4bb6-015c-46f1-96a4-a2a66bb3636c" />
+
+_Figure 1: Wood sample illustrating earlywood cells (orange region) and latewood cells (red region) and annual tree rings (green lines). Samples were cut into 10 cm sticks, stained with Safranin, dehydrated, and imaged with a Zeiss confocal microscope._
 
 
 ## Installation
