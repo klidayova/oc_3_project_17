@@ -18,6 +18,9 @@ Wood samples from trees aged 300–400 years provide an opportunity to investiga
 
 _Figure 1: Wood sample illustrating earlywood cells (orange region) and latewood cells (red region) and annual tree rings (green lines). Samples were cut into 10 cm sticks, stained with Safranin, dehydrated, and imaged with a Zeiss confocal microscope._
 
+In general, the software [ROXAS](https://www.quantitative-plant.org/software/roxas) is commonly used for wood cell analysis. However, in this study a new sample preparation method based on Safranin staining was applied, which significantly reduced preparation time. Safranin reacts with cellulose and alters the coloration of anatomical structures in the images, making them incompatible with the ROXAS software. Therefore, a new analysis solution had to be developed.
+
+To investigate changes in wood anatomy, annual tree rings are first detected to assign wood cells to the correct year. Within each tree ring, individual wood cells are then identified. For each cell, the lumen and cell wall are distinguished, and the average wall thickness and lumen area are measured.
 
 ## Installation
 For the analysis, two types of programs were developed: a FIJI macro and a Python Jupyter Notebook.
@@ -66,7 +69,16 @@ Then run [Jupyter Lab](https://jupyter.org) from within the `oc_3_project_17` co
     conda activate oc_3_project_17
     jupyter-lab
 
-Inside the `notebooks` folder you will find Jupyter notebooks for:
+Inside the `notebooks` folder you will find FIJI macro and Jupyter notebooks for:
+
+### Step 1 : [Preprocessing the image in FIJI](notebooks/)
+
+  This notebook detects fiducial particles in electron microscopy (EM) images for use in CLEM workflows. The fiducial particles in EM image are characterized by bright rings with a dark center and can be detected using template matching.
+The pipeline consists of:
+
+1. **Fiducial particle detection**: Detection of fiducial particles is done using the template matching algorithm with an artificial template (dark-centered spot).
+2. **Cluster detection**: Filtering the set of individual fiducial particles by recognizing clusters of overlapping or closely located detections (≥3) and saving their centroids.
+3. **Results saving**: Saving the positions of all detected fiducial particles and the positions of fiducial clusters into files in multiple formats (Pandas DataFrame, XML, PLY) for downstream analysis. 
 
 ## Acknowledgements
 AI4Life has received funding from the European Union’s Horizon Europe research and innovation programme under grant agreement number 101057970. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.
