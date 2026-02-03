@@ -20,6 +20,27 @@ _Figure 1: Wood sample illustrating earlywood cells (orange region) and latewood
 
 
 ## Installation
+For the analysis, two types of programs were developed: a FIJI macro and a Python Jupyter Notebook.
+
+### 1. FIJI macro
+
+Install FIJI:
+
+1. Go to the official FIJI website: [https://imagej.net/software/fiji/downloads](https://imagej.net/software/fiji/downloads).
+2. Download the installer or ZIP file for your operating system (Windows, macOS, or Linux).
+3. Unzip the downloaded archive to a folder on your computer.
+ 
+⚠️ Avoid installing FIJI in C:\Program Files to prevent permission issues.
+
+Run the FIJI macro:
+
+1. Download the FIJI macro file.
+2. Move the macro file into the FIJI plugins directory, e.g.: Fiji.app/plugins/
+3. Start FIJI.
+4. Run the macro via:
+Plugins → FIJI preprocessing
+
+### 2. Python (Jupyter Notebook)
 
 Install the [conda](https://conda.io) package, dependency and environment manager.
 
