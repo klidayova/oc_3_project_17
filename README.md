@@ -1,4 +1,4 @@
-<a href="https://ai4life.eurobioimaging.eu/open-calls/">
+[preprocessed_original.tif](https://github.com/user-attachments/files/25050087/preprocessed_original.tif)<a href="https://ai4life.eurobioimaging.eu/open-calls/">
     <img src="https://github.com/ai4life-opencalls/.github/blob/main/AI4Life_banner_giraffe_nodes_OC.png?raw=true" width="70%">
   </a>
 </p>
@@ -71,7 +71,7 @@ Then run [Jupyter Lab](https://jupyter.org) from within the `oc_3_project_17` co
 
 Inside the `notebooks` folder you will find FIJI macro and Jupyter notebooks for:
 
-### Step 1 : [FIJI Macro: Wood Anatomy Image Preprocessing and Segmentation](notebooks/FIJI_preprocessing.ijm)
+### Step 1 : [FIJI Macro: Wood Anatomy Image Preprocessing and Segmentation](notebooks/Wood_Anatomy-Image_Preprocessing_and_Segmentation.ijm)
 
 This FIJI macro performs automated preprocessing and segmentation of confocal microscopy images of wood samples stained with Safranin. The goal is to identify healthy wood regions, segment cell lumina and cell walls, and produce cell-level masks suitable for downstream quantitative analysis.
 
@@ -87,6 +87,18 @@ Main processing steps:
 6. **Cell segmentation using watershed**: A distance transform is computed from the lumen segmentation. Classical watershed segmentation is applied to separate touching cells. Very small, very large, or irregular regions are filtered out.
 7. **Cell wall segmentation**: Cell wall regions are derived by combining lumen and watershed segmentations. Binary wall masks are generated and refined.
 8. **Visualization outputs**: For quality control and inspection, the macro generates transparent overlays showing wood mask, lumen segmentation, cell segmentation and cell wall segmentation on the original image.
+
+<img width="4512" height="1708" alt="2_prepro_img" src="https://github.com/user-attachments/assets/bcc4a856-fb45-4793-8460-80a48e866863" />
+
+_Figure 2: Preprocessed image._
+
+<img width="4512" height="1708" alt="4_segmentation" src="https://github.com/user-attachments/assets/dfe3a968-d262-42bc-ba6f-a6b07253ed04" />
+
+_Figure 3: Binary cell lumen segmentation._
+
+<img width="4512" height="1708" alt="6_wall_segmentation_on_original_image" src="https://github.com/user-attachments/assets/2f746e73-3e67-4fd6-a295-870788a69c06" />
+
+_Figure 4: Cell wall and cell lumen borders overlaid on the original image._
 
 
 ## Acknowledgements
