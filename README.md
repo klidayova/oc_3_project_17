@@ -73,12 +73,12 @@ Inside the `notebooks` folder you will find FIJI macro and Jupyter notebooks for
 
 ### Step 1 : [Preprocessing the image in FIJI](notebooks/)
 
-  This notebook detects fiducial particles in electron microscopy (EM) images for use in CLEM workflows. The fiducial particles in EM image are characterized by bright rings with a dark center and can be detected using template matching.
+  This notebook preprocesses the image
 The pipeline consists of:
 
-1. **Fiducial particle detection**: Detection of fiducial particles is done using the template matching algorithm with an artificial template (dark-centered spot).
-2. **Cluster detection**: Filtering the set of individual fiducial particles by recognizing clusters of overlapping or closely located detections (≥3) and saving their centroids.
-3. **Results saving**: Saving the positions of all detected fiducial particles and the positions of fiducial clusters into files in multiple formats (Pandas DataFrame, XML, PLY) for downstream analysis. 
+1. **.**:
+2. **.**: 
+3. **.**:  
 
 ## Acknowledgements
 AI4Life has received funding from the European Union’s Horizon Europe research and innovation programme under grant agreement number 101057970. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.
