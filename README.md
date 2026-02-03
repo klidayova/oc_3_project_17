@@ -71,14 +71,23 @@ Then run [Jupyter Lab](https://jupyter.org) from within the `oc_3_project_17` co
 
 Inside the `notebooks` folder you will find FIJI macro and Jupyter notebooks for:
 
-### Step 1 : [Preprocessing the image in FIJI](notebooks/)
+### Step 1 : [FIJI Macro: Wood Anatomy Image Preprocessing and Segmentation](notebooks/FIJI_preprocessing.ijm)
 
-  This notebook preprocesses the image
-The pipeline consists of:
+This FIJI macro performs automated preprocessing and segmentation of confocal microscopy images of wood samples stained with Safranin. The goal is to identify healthy wood regions, segment cell lumina and cell walls, and produce cell-level masks suitable for downstream quantitative analysis.
 
-1. **.**:
-2. **.**: 
-3. **.**:  
+Main processing steps:
+1. **Image loading**: Images are imported using the Bio-Formats Importer to ensure compatibility with microscopy file formats.
+2. **Image preprocessing**:
+    * Contrast enhancement with controlled saturation.
+    * Gaussian blurring to reduce noise.
+    * CLAHE (Contrast Limited Adaptive Histogram Equalization) preprocessing to improve local contrast.
+3. **Detection of healthy wood regions**: Dark background regions are removed using background subtraction and global thresholding. Morphological operations (erosion/dilation) are applied to clean the mask. Small objects are excluded to retain only continuous, well-preserved wood tissue.
+4. **Lumen segmentation**: Local thresholding (Sauvola method) is applied to detect cell lumina. The segmentation is restricted to the previously detected wood region. Morphological cleanup removes artifacts and fills holes.
+5. **Detection of elongated cells**: Shape descriptors (area and aspect ratio) are used to identify elongated cells. Only cells exceeding a defined aspect-ratio threshold are retained.
+6. **Cell segmentation using watershed**: A distance transform is computed from the lumen segmentation. Classical watershed segmentation is applied to separate touching cells. Very small, very large, or irregular regions are filtered out.
+7. **Cell wall segmentation**: Cell wall regions are derived by combining lumen and watershed segmentations. Binary wall masks are generated and refined.
+8. **Visualization outputs**: For quality control and inspection, the macro generates transparent overlays showing wood mask, lumen segmentation, cell segmentation and cell wall segmentation on the original image.
+
 
 ## Acknowledgements
 AI4Life has received funding from the European Union’s Horizon Europe research and innovation programme under grant agreement number 101057970. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or the European Research Council Executive Agency. Neither the European Union nor the granting authority can be held responsible for them.
