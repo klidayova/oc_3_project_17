@@ -85,7 +85,7 @@ function processFile(dir, file) {
 // Save good wood mask-dark
 	selectImage("good_wood_mask");
 	run("Duplicate...", "title=good_wood_mask_copy");
-    saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "nodark_wood_mask.tif");
+    saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "healthy_wood_mask.tif");
     close();
     close("good_wood_mask_copy");
 	
@@ -161,11 +161,11 @@ function processFile(dir, file) {
 	run("Auto Local Threshold", "method=Sauvola radius=15 parameter_1=0 parameter_2=0 white");
 	run("Invert");
 	
-	selectImage("wood_mask");
+	selectImage("good_wood_mask");                                                                       // or [good_wood_mask_copy] or commented out this to have whole segmentation  
 	run("Duplicate...", "title=wood_mask_copy");
 	run("8-bit");
 	
-	imageCalculator("AND create", "preprocessed_image_copy", "wood_mask_copy");                                    // or [good_wood_mask_copy] or commented out this to have whole segmentation
+	imageCalculator("AND create", "preprocessed_image_copy", "wood_mask_copy");                                   
 	rename("masked_preprocessed_image");                                                           // This is still needed here because otherwise I loose in FIll holes step part of the segmentation so at least the largest component needs to stay
                 
 	run("Fill Holes");
@@ -178,42 +178,29 @@ function processFile(dir, file) {
 	rename("thresholded_image");                                                                    //  [thresholded_image]
 	close("preprocessed_image_copy");
 	close("wood_mask_copy");
-	
 
 	
-	selectImage("thresholded_image");
-	run("Duplicate...", "title=local_threshold_image_no_small_regions");
-	
-	selectImage("thresholded_image");
-	run("Duplicate...", "title=long_cell_segmentation");
-	
-	selectImage("thresholded_image");
-	run("Duplicate...", "title=local_threshold_image_to_overlay");
-	
-	selectImage("thresholded_image");
-	run("Duplicate...", "title=local_threshold_image_to_save");
-//	waitForUser("Postprocess the lumen segmentation - remove small objects 2");
-	
 // Save Lumen segmentation
-	selectImage("local_threshold_image_to_save");
+	selectImage("thresholded_image");
+	run("Duplicate...", "title=thresholded_image_copy");
 	run("8-bit");
 	run("Invert");
 	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "segmentation.tif");
-//waitForUser("Postprocess the lumen segmentation - remove small objects 2");
+	close();
+	close("thresholded_image_copy");
+
 
 //Long cell segmentation
-	selectImage("long_cell_segmentation");
+	selectImage("thresholded_image");
+	run("Duplicate...", "title=long_cell_segmentation");
 	run("Invert");
-	
-	// 1) Measure all particles including AR
-	run("Set Measurements...", "area fit shape redirect=None decimal=3");
+	run("Set Measurements...", "area fit shape redirect=None decimal=3");                                	// Measure all particles including AR
 	run("Analyze Particles...", "size=5-Infinity circularity=0.00-0.5 show=Nothing display clear add");
 	
-	// 2) Filter ROIs by AR threshold and build a mask
-	minAR = 2.0; // adjust threshold for "elongated"
+	minAR = 2.0;  // adjust threshold for "elongated"                                                        // Filter ROIs by AR threshold and build a mask
 	n = nResults;
 	run("Select None");
-	newImage("elongated", "8-bit black", getWidth(), getHeight(), 1);
+	newImage("long_cells", "8-bit black", getWidth(), getHeight(), 1);
 	
 	for (i = 0; i < n; i++) {
 	    ar = getResult("AR", i);
@@ -222,33 +209,31 @@ function processFile(dir, file) {
 	        run("Fill");
 	    }
 	}
-	selectWindow("elongated");
-
-//	waitForUser("Postprocess the lumen segmentation - remove small objects 2");
-	//run("Analyze Particles...", "size=100-Infinity circularity=0.00-0.30 show=Masks");
-	//run("Invert LUT");
-	//run("Invert");
+	selectWindow("long_cells");
 	run("8-bit");
-	rename("long_cells");
 
 	selectImage("good_wood_mask");
 	run("Duplicate...", "title=good_wood_mask_copy");
+	
 	imageCalculator("AND create", "long_cells", "good_wood_mask_copy");                                    // commented out this to have whole segmentation         
 	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "long_cells2.tif");
 	close("good_wood_mask_copy");
+	close("long_cell_segmentation");
 
 //Save lumen segmentation on original image
-	selectImage("local_threshold_image_to_overlay");
+	selectImage("thresholded_image");
+	run("Duplicate...", "title=thresholded_image_copy");
 	run("Analyze Particles...", "display clear overlay add composite record");
 	
 	selectImage("preprocessed_image");
 	run("Duplicate...", "title=preprocessed_image_copy");
-	selectImage("preprocessed_image_copy");
+
 	roiManager("Show All without labels");
 	run("Flatten");
 	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "segmentation_on_input_transparent.tif");
 	close();
 	close("preprocessed_image_copy");
+	close("thresholded_image_copy");
 //-------------------------------------------
 
 //// Create and save late wood segmentation
@@ -281,93 +266,96 @@ green_flag = 1;
 if (green_flag==1) {		
 //-------------------------------------------
 // --- Watershed - excluding small regions - seeds only on large cells
-	selectImage("thresholded_image");
-	run("Duplicate...", "title=thresholded_image_copy");
-	run("Invert");
-	run("8-bit");
-	run("Analyze Particles...", "size=350-infinity pixel circularity=0.00-1.00 show=Masks"); //0-2000, 0.5-1.0
-	run("Invert LUT");	
-	run("Invert");
-	
-	run("Distance Map");
-	run("Enhance Contrast", "saturated=0.35");
-	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "DT_on_removed_small_regions.tif");
-	rename("distance_map");
-	close("thresholded_image_copy");
-
-// --- Watershed - normal - seeds on cell regions	
 //	selectImage("thresholded_image");
 //	run("Duplicate...", "title=thresholded_image_copy");
 //	run("Invert");
 //	run("8-bit");
-//	run("Analyze Particles...", "size=0-2000 pixel circularity=0.5-1.00 show=Masks"); //0-2000, 0.5-1.0
+//	run("Analyze Particles...", "size=350-infinity pixel circularity=0.00-1.00 show=Masks"); //0-2000, 0.5-1.0
 //	run("Invert LUT");	
 //	run("Invert");
 //	
 //	run("Distance Map");
 //	run("Enhance Contrast", "saturated=0.35");
-//	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "DT_on_cell_regions.tif");
-//	rename("distance_map");
+//	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "DT_on_removed_small_regions.tif");
+//	rename("distance_map");                                                                                            //  [distance_map]
 //	close("thresholded_image_copy");
+
+// --- Watershed - normal - seeds on cell regions	
+	selectImage("thresholded_image");
+	run("Duplicate...", "title=thresholded_image_copy");
+	run("Invert");
+	run("8-bit");
+	run("Analyze Particles...", "size=0-2000 pixel circularity=0.5-1.00 show=Masks"); //0-2000, 0.5-1.0
+	run("Invert LUT");	
+	run("Invert");
+	
+	run("Distance Map");
+	run("Enhance Contrast", "saturated=0.35");
+	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "DT_on_cell_regions.tif");
+	rename("distance_map");
+	close("thresholded_image_copy");
 
 	
     run("Classic Watershed", "input=[distance_map] mask=None use min=0 max=255");
-    rename("watershed_image");
-   
+    rename("watershed_image");                                                                                          //  [watershed_image]
+    saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "watershed_image.tif");
+	rename("watershed_image");
 
 // Save watershed as a binary image
 	selectImage("watershed_image");
-	run("Duplicate...", "title=watershed_image_to_save");
+	run("Duplicate...", "title=watershed_image_copy");
     run("8-bit");
 	setAutoThreshold("Default dark no-reset");
 	setThreshold(1, 255);
 	run("Threshold...");
 	run("Convert to Mask");
-	run("Duplicate...", "title=watershed_image_to_save1");
+	run("Duplicate...", "title=cell_segmentation");                                                                     //  [cell_segmentation]
+	
+	selectImage("watershed_image_copy");
 	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "cell_segmentation.tif");
+	rename("watershed_image_copy");
+//	close("watershed_image_copy");
 
 // Save watershed as a binary image - remove large cells and elongated cells
-	selectImage("watershed_image_to_save");
+	selectImage("watershed_image_copy");
 	run("Analyze Particles...", "size=0-5000 pixel circularity=0.00-1.00 show=Masks display clear overlay add composite record"); //0-2000, 0.5-1.0
 	run("Invert LUT");
+	rename("watershed_image_cleaned");
 
-	run("Duplicate...", "title=watershed_image_to_overlay");
-	selectImage("Mask of watershed_image_to_save");
+	run("Duplicate...", "title=watershed_image_cleaned_copy");
+	selectImage("watershed_image_cleaned_copy");
     saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "good_cell_mask.tif");
-  //  waitForUser("Clean the segmentation and continue processing2");
-    
+	close();
+    close("watershed_image_cleaned_copy");
 
 
 //-------------------------------------------
 // Create wall segmentation by overlaying lumen and cell segmentation
-
-
-//    selectImage("preprocessed_image");
-//	run("Duplicate...", "title=preprocessed_image_copy");
-//	selectImage("preprocessed_image_copy");
 	selectImage("thresholded_image");
 	run("Duplicate...", "title=thresholded_image_copy");
+	selectImage("watershed_image");
+	run("Duplicate...", "title=watershed_image_copy");
 	
-    imageCalculator("AND create 32-bit", "thresholded_image_copy", "watershed_image");
+    imageCalculator("AND create 32-bit", "thresholded_image_copy", "watershed_image_copy");
     run("6 shades");
     run("8-bit");
-    rename("wall_segmentation");
+    rename("image_combination");
     close("thresholded_image_copy");
+    close("watershed_image_copy");
    
 // Overlay wall segmentation on the original image
-	selectImage("original_image");
-    run("Duplicate...", "title=original_image_copy");
-    
-	selectImage("wall_segmentation");																// * wall_segmentation
+	selectImage("image_combination");																
 	run("8-bit");
 	setAutoThreshold("Default dark no-reset");
 	setThreshold(1, 255);
 	run("Threshold...");
 	run("Convert to Mask");
-	
-	selectImage("wall_segmentation");
+	run("Duplicate...", "title=wall_segmentation");                                                  //  [wall_segmentation]
 	run("Duplicate...", "title=wall_segmentation_copy");
-	selectImage("wall_segmentation_copy");
+	
+	selectImage("original_image");
+    run("Duplicate...", "title=original_image_copy");
+
 	imageCalculator("AND create", "wall_segmentation_copy", "original_image_copy");
 	rename("wall_segmentation_on_original_image");
 	run("8-bit");
@@ -380,27 +368,27 @@ if (green_flag==1) {
 // Saving the wall segmentation
 	selectImage("wall_segmentation");
 	run("Duplicate...", "title=wall_segmentation_copy");
-	selectImage("wall_segmentation_copy");
     saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "wall_segmentation.tif");
     close(); 
     close("wall_segmentation_copy");
 
     
-	
-	selectImage("watershed_image_to_overlay");
+// Saving the cell segmentation	on input image
+	selectImage("cell_segmentation");
+	run("Duplicate...", "title=cell_segmentation_copy");
 	run("Analyze Particles...", "display clear overlay add composite record");
 	
 	selectImage("original_image");
     run("Duplicate...", "title=original_image_copy");
-	selectImage("original_image_copy");
+
 	roiManager("Show All without labels");
 	run("Flatten");
 	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "cell_on_input_transparent.tif");
 	close();
-	close("watershed_image_to_overlay"); 
+	close("cell_segmentation_copy"); 
 	close("original_image_copy");
 	
-// Saving the wall segmentation on 
+// Saving the wall segmentation on input image
 	selectImage("wall_segmentation");
 	run("Duplicate...", "title=wall_segmentation_copy");
 	selectImage("wall_segmentation_copy");
