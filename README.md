@@ -1,4 +1,4 @@
-[preprocessed_original.tif](https://github.com/user-attachments/files/25050087/preprocessed_original.tif)<a href="https://ai4life.eurobioimaging.eu/open-calls/">
+<a href="https://ai4life.eurobioimaging.eu/open-calls/">
     <img src="https://github.com/ai4life-opencalls/.github/blob/main/AI4Life_banner_giraffe_nodes_OC.png?raw=true" width="70%">
   </a>
 </p>
