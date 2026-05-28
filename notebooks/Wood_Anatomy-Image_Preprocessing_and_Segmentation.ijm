@@ -185,7 +185,7 @@ function processFile(dir, file) {
 	run("Duplicate...", "title=thresholded_image_copy");
 	run("8-bit");
 	run("Invert");
-	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "segmentation.tif");
+	saveAs("Tiff", fulloutdir + File.separator + filename +  File.separator + "lumen_segmentation.tif");
 	close();
 	close("thresholded_image_copy");
 
